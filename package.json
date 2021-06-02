@@ -1,0 +1,29 @@
+{
+  "name": "arraylist",
+  "version": "0.1.0",
+  "description": "array-like object designed to provide facilities similar to those of Kotlin/Java's ArrayList",
+  "main": "ArrayList.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maruseron/ArrayList.git"
+  },
+  "keywords": [
+    "array",
+    "arraylist",
+    "javascript",
+    "js"
+  ],
+  "author": "maruseron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maruseron/ArrayList/issues"
+  },
+  "homepage": "https://github.com/maruseron/ArrayList#readme",
+  "dependencies": {
+    "@types/node": "^15.3.1"
+  }
+}
