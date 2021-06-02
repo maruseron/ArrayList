@@ -11,6 +11,19 @@ declare type NonFalsyArrayList<T> = T extends Falsy ? never : ArrayList<T>;
 export default class ArrayList<T> extends Array<T> {
     constructor(...args: any[]);
     /**
+     * A call to buildWithTransform that does not require using the constructor.
+     * @param  {number} size the size of the new array.
+     * @param  {Function} transform the transformator function to be applied to each item.
+     * @return {ArrayList} the newly built ArrayList.
+     */
+    static iterate<T>(size: number, transform: (x: number) => T): ArrayList<T>;
+    /**
+     * A "safer" ArrayList constructor. Takes out the uncertainty of the Array constructor.
+     * @param  {Array} args the items of the new ArrayList.
+     * @return {ArrayList} the newly built ArrayList.
+     */
+    static of<T>(...args: T[]): ArrayList<T>;
+    /**
      * Mutates the ArrayList by adding an element at the end.
      * @param {Array} elements the element(s) to add to the array.
      * @returns {ArrayList} the original ArrayList.
@@ -22,6 +35,13 @@ export default class ArrayList<T> extends Array<T> {
      * @returns {ArrayList} the original ArrayList.
      */
     remove(...elements: T[]): ArrayList<T>;
+    /**
+     * Mutates the ArrayList, removing elements by index.
+     * @param  {number} index the index of the element(s) to remove.
+     * @param  {number} [amount] the amount of elements to remove. 1 by default.
+     * @returns {ArrayList} the original ArrayList.
+     */
+    removeFromIndex(index: number, amount?: number): ArrayList<T>;
     /**
      * See ArrayList#add, but append is non-mutating.
      * @param elements the element(s) to add to the array.
@@ -162,15 +182,14 @@ export default class ArrayList<T> extends Array<T> {
         [index in string | number]: T;
     };
     /**
-     * Creates an object that relates a group of objects
-     * @param propOrSelector
-     * @returns
+     * Creates an object that relates a group of items to one of their properties.
+     * @param {string | Function} propOrSelector the property to associate the elements with.
      */
     groupBy(propOrSelector: string | ((element: T) => string | number)): {
         [index in string]: ArrayList<T>;
     };
     /**
-     * Inserts an element or group of elements at an specific index of the ArrayList. Mutating.
+     * Inserts an element or group of elements at a specific index of the ArrayList. Mutating.
      * @param {number} index the index where the element(s) will be added.
      * @param {Array} elements the element(s) to add.
      * @returns {ArrayList} the modified ArrayList.

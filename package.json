@@ -1,6 +1,6 @@
 {
-  "name": "arraylist",
-  "version": "0.1.0",
+  "name": "es6-arraylist",
+  "version": "0.2.0",
   "description": "array-like object designed to provide facilities similar to those of Kotlin/Java's ArrayList",
   "main": "ArrayList.js",
   "scripts": {

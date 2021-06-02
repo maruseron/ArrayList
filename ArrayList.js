@@ -24,6 +24,26 @@ class ArrayList extends Array {
             super(...args);
     }
     /**
+     * A call to buildWithTransform that does not require using the constructor.
+     * @param  {number} size the size of the new array.
+     * @param  {Function} transform the transformator function to be applied to each item.
+     * @return {ArrayList} the newly built ArrayList.
+     */
+    static iterate(size, transform) {
+        return buildWithTransform(size, transform);
+    }
+    /**
+     * A "safer" ArrayList constructor. Takes out the uncertainty of the Array constructor.
+     * @param  {Array} args the items of the new ArrayList.
+     * @return {ArrayList} the newly built ArrayList.
+     */
+    static of(...args) {
+        const list = new ArrayList();
+        for (const arg of args)
+            list.push(arg);
+        return list;
+    }
+    /**
      * Mutates the ArrayList by adding an element at the end.
      * @param {Array} elements the element(s) to add to the array.
      * @returns {ArrayList} the original ArrayList.
@@ -39,12 +59,22 @@ class ArrayList extends Array {
      */
     remove(...elements) {
         this.forEach((value, index) => {
-            if (elements.includes(value)) {
+            if (elements.length && elements.includes(value)) {
                 this.splice(index, 1);
                 elements.splice(elements.indexOf(value), 1);
             }
             ;
         });
+        return this;
+    }
+    /**
+     * Mutates the ArrayList, removing elements by index.
+     * @param  {number} index the index of the element(s) to remove.
+     * @param  {number} [amount] the amount of elements to remove. 1 by default.
+     * @returns {ArrayList} the original ArrayList.
+     */
+    removeFromIndex(index, amount = 1) {
+        this.splice(index, amount);
         return this;
     }
     /**
@@ -281,18 +311,9 @@ class ArrayList extends Array {
         }, {});
     }
     /**
-     * Creates an object that relates a group of objects
-     * @param propOrSelector
-     * @returns
+     * Creates an object that relates a group of items to one of their properties.
+     * @param {string | Function} propOrSelector the property to associate the elements with.
      */
-    /*groupBy(propOrSelector: string | ((element: T) => boolean)): Map<T, ArrayList<T>>{
-        const map = new Map<T, ArrayList<T>>()
-        if (typeof propOrSelector === "string" && this.every((i: any) => propOrSelector in i))
-            this.forEach((i: any) => map.has(i) ? map.set(i, map.get(i).add()) : map.set(i, i[propOrSelector]))
-        else if (typeof propOrSelector === "function" && this.every((i: any) => propOrSelector(i)))
-            this.forEach((i: any) => map.set(i, propOrSelector(i)))
-        return map;
-    }*/
     groupBy(propOrSelector) {
         if (typeof propOrSelector === "string" && this.every((i) => propOrSelector in i))
             return this.reduce((acc, val) => {
@@ -312,7 +333,7 @@ class ArrayList extends Array {
             throw new TypeError("Not all objects in ArrayList share the same property");
     }
     /**
-     * Inserts an element or group of elements at an specific index of the ArrayList. Mutating.
+     * Inserts an element or group of elements at a specific index of the ArrayList. Mutating.
      * @param {number} index the index where the element(s) will be added.
      * @param {Array} elements the element(s) to add.
      * @returns {ArrayList} the modified ArrayList.
