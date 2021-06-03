@@ -318,15 +318,17 @@ class ArrayList extends Array {
         if (typeof propOrSelector === "string" && this.every((i) => propOrSelector in i))
             return this.reduce((acc, val) => {
                 var _a;
-                acc[propOrSelector] = (_a = acc[propOrSelector]) !== null && _a !== void 0 ? _a : new ArrayList();
-                acc[propOrSelector].push(val);
+                const value = val[propOrSelector];
+                acc[value] = (_a = acc[value]) !== null && _a !== void 0 ? _a : new ArrayList();
+                acc[value].push(val);
                 return acc;
             }, {});
-        else if (typeof propOrSelector === "function" && this.every((i) => propOrSelector(i) in i))
+        else if (typeof propOrSelector === "function" && this.every((i) => !!propOrSelector(i)))
             return this.reduce((acc, val) => {
                 var _a;
-                acc[propOrSelector(val)] = (_a = acc[propOrSelector(val)]) !== null && _a !== void 0 ? _a : new ArrayList();
-                acc[propOrSelector(val)].push(val);
+                const value = propOrSelector(val);
+                acc[value] = (_a = acc[value]) !== null && _a !== void 0 ? _a : new ArrayList();
+                acc[value].push(val);
                 return acc;
             }, {});
         else
