@@ -1,7 +1,7 @@
 {
   "name": "es6-arraylist",
-  "version": "0.2.0",
-  "description": "array-like object designed to provide facilities similar to those of Kotlin/Java's ArrayList",
+  "version": "0.2.4",
+  "description": "array-derived class designed to provide facilities similar to those of Kotlin/Java's ArrayList",
   "main": "ArrayList.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
