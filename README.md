@@ -2,6 +2,8 @@
 
 Array-derived class taking advantage of ES6 built-in subclassing designed to provide facilities similar to those of Kotlin or Java's ArrayList. It's by no means as powerful, but has way more than just add, get and remove.
 
+I apologize for the lack of testing and the incomplete readme. I'll update regularly until both of these things are finished.
+
 ## Usage
 
 ### Adding to your project
@@ -51,8 +53,7 @@ There are several functions that serve this purpose with slight differences each
 ```js
 // Add is mutating. Returns the modified original list.
 const list1 = new ArrayList(1, 2);
-list1.add(3);
-console.log(list1); // [1, 2, 3]
+list1.add(3); // [1, 2, 3]
 
 // Append is non mutating. Returns a modified copy of the original list.
 const list2 = new ArrayList(1, 2);
@@ -63,30 +64,25 @@ console.log(list2b); // [1, 2, 3]
 // Insert adds elements at a specific index without overwriting any values. 
 // Mutating.
 const list3 = new ArrayList(2, 3);
-list3.insert(0, 1);
-console.log(list3); // [1, 2, 3]
+list3.insert(0, 1); // [1, 2, 3]
 
 // Set adds elements at a specific index, overwriting any values. Mutating.
 const list4 = new ArrayList(1, 2, 4);
-list4.set(2, 3);
-console.log(list4); // [1, 2, 3]
+list4.set(2, 3); // [1, 2, 3]
 ```
 
 #### Removing elements:
 ```js
 // Remove does exactly what you think it does. Mutating.
 const list1 = new ArrayList(1, 2, 3, 4);
-list1.remove(4);
-console.log(list1); // [1, 2, 3]
+list1.remove(4); // [1, 2, 3]
 
 // Alternatively, you can use an index to remove an item.
 const list2 = new ArrayList(1, 2, 3, 4);
-list2.removeFromIndex(3);
-console.log(list2); // [1, 2, 3]
+list2.removeFromIndex(3); // [1, 2, 3]
 // By default, only 1 element is removed. You can define the amount:
 const list3 = new ArrayList(1, 2, 3, 4, 5);
-list3.removeFromIndex(3, 2);
-console.log(list3); // [1, 2, 3]
+list3.removeFromIndex(3, 2); // [1, 2, 3]
 
 // Difference is a non-mutating equivalent to remove.
 // It expects an Array / ArrayList.
@@ -99,51 +95,46 @@ console.log(list4b); // [1, 2, 3];
 ### Retrieving items
 ```js
 const list = new ArrayList("first", "second", "third", "fourth", "last");
+
 // If given no arguments, first returns the first element of the ArrayList.
-console.log(list.first()); // "first"
+list.first(); // "first"
+
 // If, instead, provided a predicate, will return the first element 
 // (using Array.find) that fulfills it:
-console.log(list.first(s => s.length == 6)); // "second"
+list.first(s => s.length == 6); // "second"
 
 // Similarly, if given no arguments, last will return the last element 
 // of the ArrayList.
-console.log(list.last()); // "last"
+list.last(); // "last"
 // With a predicate, it will return the last element that fulfills it, 
 // using ArrayList.findLast():
-console.log(list.last(s => s.length == 6)); // "fourth"
+list.last(s => s.length == 6); // "fourth"
 
 // In case first / find / last / findLast fails finding the argument, 
 // a defaultValue function can be specified.
-console.log(list.first(s => s.length == 10,
-                       _ => "nothing found.")); // "nothing found."
+list.first(s => s.length == 10,
+           _ => "nothing found."); // "nothing found."
 
 // At is just an implementation of Array.at() which is currently experimental.
 // Returns undefined if the index is out of bounds.
-const secondElement = list.at(1);
-console.log(secondEelement); // "second"
-const lastElement = list.at(-1);
-console.log(lastElement); // "last"
+list.at(1);  // "second"
+list.at(-1); // "last"
 
 // ElementAtOrElse allows for a custom return value in case the index is out of bounds.
-const element = list.elementAtOrElse(7, i => `nothing found at index ${i}`);
-console.log(element); // "nothing found at index 7"
+list.elementAtOrElse(7, i => `nothing found at index ${i}`); // "nothing found at index 7"
 
 // You can get the maximum and minimum values of an ArrayList using max and min:
 const someNumbers = new ArrayList(1, 2, 3, 4, 5);
-const max = someNumbers.max();
-const min = someNumbers.min();
-console.log(max); // 5
-console.log(min); // 1
+someNumbers.max(); // 5
+someNumbers.min(); // 1
 // If you have objects that can't be compared using standard greater or less than operators,
 // you can define a default comparator and use maxBy and minBy:
 const someObjects = new ArrayList({ name: "peter", age: 20 },
                                   { name: "monica", age: 23},
                                   { name: "marcelo", age: 19});
 const ageFilter = person => person.age;
-const oldest = someObjects.maxBy(ageFilter);
-const youngest = someObjects.minBy(ageFilter);
-console.log(maxAge); // { name: "monica", age: 23 }
-console.log(minAge); // { name: "marcelo", age: 19 }
+const oldest = someObjects.maxBy(ageFilter);   // { name: "monica", age: 23 }
+const youngest = someObjects.minBy(ageFilter); // { name: "marcelo", age: 19 }
 
 // To obtain random values from an ArrayList, you can use random and sample:
 // Random returns one random element from the ArrayList.
@@ -156,30 +147,28 @@ const randomValues = someList.sample(3);
 ```js
 // Without arguments, any will check if there is at least one element
 // in an ArrayList:
-const list1 = new ArrayList(1, 2, 3);
-console.log(list1.any()); // true
-const list2 = new ArrayList();
-console.log(list.any()); // false
-const list3 = new ArrayList(5); // [ empty x 5 ]
-console.log(list.any()); // false
+new ArrayList().any();        // false
+new ArrayList(5).any();       // false, the Array has no keys
+const list1 = new ArrayList(1, 2, 3).any(); // true
+
 // If, instead, given a predicate, any will behave just like Array.some():
-console.log(list1.any(n => n == 2)) // true
+list1.any(n => n == 2); // true
 
 // Contains and containsAll check if there is a particular item in
 // an ArrayList. Uses the == operator.
 const list4 = new ArrayList("wagner", "at", "the", "opera");
-console.log(list4.contains("opera")); // true
-console.log(list4.containsAll(["wagner", "opera"])); // true
+list4.contains("opera"); // true
+list4.containsAll(["wagner", "opera"]); // true
 
 // Equals uses the == operator to compare items on both arrays.
 const list5 = new ArrayList("some", "strings");
 const list6 = new ArrayList("some", "strings");
-console.log(list5 === list6);     // false
-console.log(list5 == list6);      // false
-console.log(list5.equals(list6)); // true
+list5 === list6;     // false
+list5 == list6;      // false
+list5.equals(list6); // true
 
 // IsEmpty checks if the array is empty. Duh.
-console.log(new ArrayList().isEmpty()); // true
+new ArrayList().isEmpty(); // true
 ```
 
 ### List operations
@@ -188,38 +177,82 @@ console.log(new ArrayList().isEmpty()); // true
 // each item of the ArrayList, filtering out falsy and null values
 // respectively:
 const list1 = new ArrayList(2, 4, "c", "d", 10);
-const mapped = list1.map(n => n / 2);
-const mappedNotFalsy = list1.mapNotFalsy(n => n / 2);
-console.log(mapped);         // [1, 2, NaN, NaN, 5]
-console.log(mappedNotFalsy); // [1, 2, 5]
+list1.map(n => n / 2);         // [1, 2, NaN, NaN, 5]
+list1.mapNotFalsy(n => n / 2); // [1, 2, 5]
 
-const mapped2 = list1.map(n => typeof n === "number" ? n / 2);
-const mappedNotNull = list1.mapNotNull(n => typeof n === "number" ? n / 2);
-console.log(mapped);        // [1, 2, undefined, undefined, 5]
-console.log(mappedNotNull); // [1, 2, 5]
+list1.map(n => typeof n === "number" ? n / 2); // [1, 2, undefined, undefined, 5]
+list1.mapNotNull(n => typeof n === "number" ? n / 2); // [1, 2, 5]
 
 // Zip returns an ArrayList of pairs created from elements of two arrays
 // at the same index:
 const list2 = new ArrayList("a", "b", 6, 8, "e");
-const zipped = list1.zip(list2);
-console.log(zipped); // [[2, "a"], [4, "b"], ["c", 6], ["d", 8], [10, "e"]]
-// Zip can also get a transformator function as a second argument.
+list1.zip(list2); // [[2, "a"], [4, "b"], ["c", 6], ["d", 8], [10, "e"]]
+// Note: Zip can also get a transformator function as a second argument.
 // It should return a pair.
 
 // If, instead, all elements are in the same array, you can use zipWithNext:
 const list3 = new ArrayList(1, "a", 2, "b", 3, "c");
-const zippedNext = list3.zipWithNext();
-console.log(zippedNext); // [[1, "a"], [2, "b"], [3, "c"]]
+list3.zipWithNext(); // [[1, "a"], [2, "b"], [3, "c"]]
 
 // Unzip allows us to turn a zipped ArrayList (list of pairs) into a pair of
 // lists:
-console.log(zipped.unzip()) // [[2, 4, "c", "d", 10], ["a", "b", 6, 8, "e"]]
+zipped.unzip(); // [[2, 4, "c", "d", 10], ["a", "b", 6, 8, "e"]]
 ```
 
 ### Altering the list
 I'm still writing this. University is awful. Sorry.
 ```js
-// chunked, drop, dropWhile, take, takeWhile, takeWhileLazy, filterInstance, filterNotFalsy, filterNotNull, reversed, shuffled, sorted, unique
+// Chunked splits an array into smaller chunks of custom size.
+const list1 = new ArrayList(1, 2, 3, 4, 5);
+list1.chunked(2); // [[1, 2], [3, 4], [5]]
+list1.chunked(3); // [[1, 2, 3], [4, 5]]
+
+// Drop and dropWhile remove the first n elements of an ArrayList.
+// They're non mutating.
+const list2 = new ArrayList("yadda", "yadda", "(", "inside", "parentheses", ")");
+list2.drop(2);                  // ["(", "inside", "parentheses", ")"]
+list2.dropWhile(s => s != "("); // ["(", "inside", "parentheses", ")"]
+
+// Take, takeWhile and takeWhileLazy take the first n elements of an ArrayList.
+// They're non mutating.
+list2.take(2);                      // ["yadda", "yadda"]
+list2.takeWhile(s => s != "(");     // ["yadda", "yadda"]
+list2.takeWhileLazy(s => s != "("); // Generator
+
+// FilterInstance, filterNotFalsy and filterNotNull filter out values:
+class Person {
+    constructor(name, age) {
+        this.name = name;
+    }
+}
+const people = new ArrayList(1, new Person("eren"),
+                             2, new Person("mikasa"),
+                             3, new Person("armin"));
+// FilterInstance uses the instanceof operator, so it won't work on primitives.
+people.filterInstance(Person); // [ { name: "eren" },
+                               //   { name: "mikasa" },
+                               //   { name: "armin"} ]
+
+const list3 = new ArrayList(1, false, null, "hello", undefined);
+list3.filterNotFalsy(); // [1, "hello"]
+list3.filterNotNull();  // [1, false, "hello"]
+
+// Reversed is a non-mutating alternative to Array.reverse:
+list3.reversed(); // [undefined, "hello", null, false, 1]
+
+// Shuffled shuffles. Go figure. Non mutating, by the way.
+// For a mutating alternative, ArrayList.shuffle()
+list3.shuffle();
+list3.shuffled();
+
+// Sorted is a non-mutating alternative to Array.sort():
+const list4 = new ArrayList(1, 3, 5, 4, 2)
+console.log(list4.sorted()); // [1, 2, 3, 4, 5]
+console.log(list4);          // [1, 3, 5, 4, 2]
+
+// Unique removes all repeated elements that are sanely comparable with standard
+// algorithms. That means no objects. Sorry. Non mutating.
+new ArrayList(1, 2, 3, 2, 4, 4, 5).unique(); // [1, 2, 3, 4, 5]
 ```
 
 ### Converting to other data types
