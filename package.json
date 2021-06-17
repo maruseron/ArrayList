@@ -1,10 +1,10 @@
 {
   "name": "es6-arraylist",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "array-derived class designed to provide facilities similar to those of Kotlin/Java's ArrayList",
   "main": "ArrayList.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "tsc": "tsc"
   },
   "repository": {
@@ -25,5 +25,8 @@
   "homepage": "https://github.com/maruseron/ArrayList#readme",
   "dependencies": {
     "@types/node": "^15.3.1"
+  },
+  "devDependencies": {
+    "jest": "^27.0.4"
   }
 }

@@ -344,8 +344,8 @@ export default class ArrayList<T> extends Array<T> {
     at(index: number): T;
     concat(...items: ArrayList<T>[]): ArrayList<T>;
     filter(predicate: (value: T, index: number, array: ArrayList<T>) => boolean, thisArg?: any): ArrayList<T>;
-    flatMap<U, This = undefined>(transform: (this: This, value: T, index: number, array: ArrayList<T>) => ArrayList<U>): ArrayList<U>;
-    from<T>(iterable: Iterable<T> | ArrayLike<T>): ArrayList<T>;
+    flatMap<U>(transform: (value: T, index: number, array: ArrayList<T>) => ArrayList<U>): ArrayList<U>;
+    from<T, U = T>(iterable: Iterable<T> | ArrayLike<T>, mapfn: (v: T, k: number) => U, thisArg?: any): ArrayList<U>;
     map<U>(transform: (value: T, index: number, array: ArrayList<T>) => U, thisArg?: any): ArrayList<U>;
     reverse(): ArrayList<T>;
     slice(start?: number, end?: number): ArrayList<T>;

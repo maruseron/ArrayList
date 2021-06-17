@@ -242,12 +242,12 @@ class ArrayList extends Array {
      * @returns {boolean} `true` if all elements are equal and are in the same place, `false` instead.
      */
     equals(array) {
-        this.forEach((_, index) => {
+        for (const [index, value] of this.entries()) {
             if (this.length !== array.length)
                 return false;
             if (this[index] != array[index])
                 return false;
-        });
+        }
         return true;
     }
     /**
@@ -585,79 +585,11 @@ class ArrayList extends Array {
             list.push(transform(this[i], this[i + 1]));
         return list;
     }
-    /*
-     * Re-implementations of Array's prototype's functions that return another Array.
-     * This solves a problem for TypeScript. It's not important at all for JS.
-     */
-    // Array.prototype.at()
     at(index) {
         if (index >= 0)
             return this[index];
         else
             return this[this.length + index];
-    }
-    // Array.prototype.concat()
-    concat(...items) {
-        const res = new ArrayList(this);
-        for (const item of items) {
-            for (const i of item) {
-                res.push(i);
-            }
-        }
-        return res;
-        //return [...this].concat(...items) as ArrayList<T>;
-    }
-    // Array.prototype.filter()
-    filter(predicate, thisArg) {
-        if (typeof thisArg !== "undefined")
-            predicate = predicate.bind(thisArg);
-        const res = new ArrayList();
-        for (let i = 0; i < this.length; i++) {
-            if (predicate(this[i], i, this))
-                res.push(this[i]);
-        }
-        return res;
-    }
-    // Array.prototype.flatMap()
-    flatMap(transform) {
-        return new ArrayList().concat(...this.map(transform));
-    }
-    // Array.from()
-    from(iterable) {
-        return Array.from(iterable);
-    }
-    // Array.prototype.map()
-    map(transform, thisArg) {
-        if (typeof thisArg !== "undefined")
-            transform = transform.bind(thisArg);
-        const res = new ArrayList();
-        for (let i = 0; i < this.length; i++)
-            res.push(transform(this[i], i, this));
-        return res;
-    }
-    // Array.prototype.reverse()
-    reverse() {
-        const length = this.length;
-        for (let first = 0, last = length - 1; first < length / 2; first++, last--) {
-            let tmp = this[first];
-            this[first] = this[last];
-            this[last] = tmp;
-        }
-        return this;
-    }
-    // Array.prototype.slice()
-    slice(start, end) {
-        const res = new ArrayList();
-        if (typeof start === "undefined")
-            return new ArrayList(this);
-        if (typeof end === "undefined")
-            end = this.length;
-        if (start < 0)
-            start += this.length;
-        for (let i = start; i <= end - 1; i++) // non inclusive
-            if (this[i])
-                res.push(this[i]);
-        return res;
     }
 }
 exports.default = ArrayList;
